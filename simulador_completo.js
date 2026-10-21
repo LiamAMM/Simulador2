@@ -1,4 +1,3 @@
-
 let clientes = [];
 let creditos = [];
 
@@ -10,7 +9,6 @@ let plazoCalculado = 0;
 let creditoAprobado = false;
 
 
-//Para recuperar o mostrar información usar los métodos de la clase utilitarios, puede agregar métodos adicionales en utilitarios
 ocultarSecciones = function () {
   let secciones = document.querySelectorAll("section");
   let elementoSeccion;
@@ -38,6 +36,31 @@ guardarTasa = function () {
   }
 }
 
+buscarCliente = function (cedula) {
+  let elementoCliente;
+  let clienteEncontrado = null;
+  for (let i = 0; i < clientes.length; i++) {
+    elementoCliente = clientes[i];
+    if (elementoCliente.cedula === cedula) {
+      clienteEncontrado = elementoCliente;
+      break;
+    }
+  }
+  return clienteEncontrado;
+}
+
+seleccionarCliente = function (cedula) {
+  let cliente = buscarCliente(cedula);
+  if (cliente != null) {
+    clienteSeleccionado = cliente;
+    mostrarTextoEnCaja("txtCedula", cliente.cedula);
+    mostrarTextoEnCaja("txtNombre", cliente.nombre);
+    mostrarTextoEnCaja("txtApellido", cliente.apellido);
+    mostrarTextoEnCaja("txtIngresos", cliente.ingresos);
+    mostrarTextoEnCaja("txtEgresos", cliente.egresos);
+  }
+}
+
 guardarCliente = function () {
   let valorCedula = recuperaraTexto("txtCedula");
   let valorNombre = recuperaraTexto("txtNombre");
@@ -45,16 +68,29 @@ guardarCliente = function () {
   let valorIngresos = recuperarFloat("txtIngresos");
   let valorEgresos = recuperarFloat("txtEgresos");
 
-  let nuevoCliente = {};
-  nuevoCliente.cedula = valorCedula;
-  nuevoCliente.nombre = valorNombre;
-  nuevoCliente.apellido = valorApellido;
-  nuevoCliente.ingresos = valorIngresos;
-  nuevoCliente.egresos = valorEgresos;
+  let clienteEncontrado = buscarCliente(valorCedula);
 
-  clientes.push(nuevoCliente);
-  alert("Cliente agregado con éxito");
+  if (clienteEncontrado == null) {
+    let nuevoCliente = {};
+    nuevoCliente.cedula = valorCedula;
+    nuevoCliente.nombre = valorNombre;
+    nuevoCliente.apellido = valorApellido;
+    nuevoCliente.ingresos = valorIngresos;
+    nuevoCliente.egresos = valorEgresos;
+
+    clientes.push(nuevoCliente);
+    alert("Cliente registrado con éxito");
+  } else {
+    clienteEncontrado.nombre = valorNombre;
+    clienteEncontrado.apellido = valorApellido;
+    clienteEncontrado.ingresos = valorIngresos;
+    clienteEncontrado.egresos = valorEgresos;
+    alert("Cliente actualizado con éxito");
+  }
+
+  clienteSeleccionado = null;
   pintarClientes();
+  limpiar();
 }
 
 pintarClientes = function () {
@@ -70,17 +106,18 @@ pintarClientes = function () {
       "<td>" + elementoCliente.apellido + "</td>" +
       "<td>" + elementoCliente.ingresos + "</td>" +
       "<td>" + elementoCliente.egresos + "</td>" +
-      "<td><button>Actualizar</button></td>" +
+      "<td><button onclick=\"seleccionarCliente('" + elementoCliente.cedula + "')\">Actualizar</button></td>" +
       "</tr>";
   }
 
   cmpTabla.innerHTML = contenidoTabla;
 }
 
-limpiarCliente = function () {
+limpiar = function () {
   mostrarTextoEnCaja("txtCedula", "");
   mostrarTextoEnCaja("txtNombre", "");
   mostrarTextoEnCaja("txtApellido", "");
   mostrarTextoEnCaja("txtIngresos", "");
   mostrarTextoEnCaja("txtEgresos", "");
+  clienteSeleccionado = null;
 }
