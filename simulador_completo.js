@@ -121,3 +121,77 @@ limpiar = function () {
   mostrarTextoEnCaja("txtEgresos", "");
   clienteSeleccionado = null;
 }
+
+buscarClienteCredito = function () {
+  let valorCedula = recuperaraTexto("buscarCedulaCredito");
+  let cliente = buscarCliente(valorCedula);
+  let cmpDatos = document.getElementById("datosClienteCredito");
+
+  if (cliente == null) {
+    cmpDatos.innerHTML = "<p>Cliente no encontrado</p>";
+  } else {
+    clienteSeleccionado = cliente;
+    cmpDatos.innerHTML = "<h3>Datos del Cliente</h3>" +
+      "<p><strong>Cédula:</strong>" + cliente.cedula + "</p>" +
+      "<p><strong>Nombre:</strong>" + cliente.nombre + "</p>" +
+      "<p><strong>Apellido:</strong>" + cliente.apellido + "</p>" +
+      "<p><strong>Ingresos:</strong>" + cliente.ingresos + "</p>" +
+      "<p><strong>Egresos:</strong>" + cliente.egresos + "</p>";
+  }
+}
+
+calcularCapacidadPago = function (cliente) {
+  let capacidad = cliente.ingresos - cliente.egresos;
+  return capacidad;
+}
+
+calcularTotalPagar = function (monto, tasa) {
+  let interes = monto * (tasa / 100);
+  let total = monto + interes;
+  return total;
+}
+
+calcularCuotaMensual = function (totalPagar, plazo) {
+  let cuota = totalPagar / plazo;
+  return cuota;
+}
+
+calcularCredito = function () {
+  if (clienteSeleccionado == null) {
+    alert("Debe buscar y seleccionar un cliente primero.");
+    return;
+  }
+
+  let monto = recuperarFloat("montoCredito");
+  let plazo = recuperarInt("plazoCredito"); 
+
+  if (isNaN(monto) || monto <= 0 || isNaN(plazo) || plazo <= 0) {
+    alert("Por favor ingrese un monto y un plazo válidos.");
+    return;
+  }
+
+  let capacidadPago = calcularCapacidadPago(clienteSeleccionado);
+  let totalPagar = calcularTotalPagar(monto, tasaInteres);
+  let cuotaMensual = calcularCuotaMensual(totalPagar, plazo);
+
+  let cmpResultado = document.getElementById("resultadoCredito");
+  let cmpBtnSolicitar = document.getElementById("btnSolicitarCredito");
+
+  let estado = "";
+  if (cuotaMensual <= capacidadPago && capacidadPago > 0) {
+    creditoAprobado = true;
+    estado = "APROBADO";
+    cmpResultado.className = "aprobado"; 
+    cmpBtnSolicitar.disabled = false;
+  } else {
+    creditoAprobado = false;
+    estado = "RECHAZADO";
+    cmpResultado.className = "rechazado"; 
+    cmpBtnSolicitar.disabled = true;
+  }
+
+  cmpResultado.innerHTML = "Capacidad de pago: " + capacidadPago + "<br>" +
+    "Total a pagar: " + totalPagar + "<br>" +
+    "Cuota mensual: " + cuotaMensual + "<br>" +
+    "RESULTADO: " + estado;
+}
