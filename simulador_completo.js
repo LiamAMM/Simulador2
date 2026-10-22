@@ -208,4 +208,37 @@ solicitarCredito = function () {
   };
 
   creditos.push(credito);
-};
+}
+
+function buscarCreditos(cedula) {
+  let creditosEncontrados = [];
+  let credito;
+  for (let i = 0; i < creditos.length; i++) {
+    credito = creditos[i];
+    if (credito.cedula === cedula) {
+      creditosEncontrados.push(credito);
+    }
+  }
+  return creditosEncontrados;
+}
+
+pintarCreditos = function (creditos) {
+  let cmpTabla = document.getElementById("tablaCreditos");
+  let contenidoTabla = "";
+  let credito;
+
+  for (let i = 0; i < creditos.length; i++) {
+    credito = creditos[i];
+    contenidoTabla += "<tr>" +
+      "<td>" + credito.cedula + "</td>" +
+      "<td>" + credito.nombre + "</td>" +
+      "<td>" + credito.apellido + "</td>" +
+      "<td>" + credito.monto + "</td>" +
+      "<td>" + credito.tasa + "</td>" +
+      "<td>" + credito.plazo + "</td>" +
+      "<td>" + credito.cuota + "</td>" +
+      "</tr>";
+  }
+
+  cmpTabla.innerHTML = contenidoTabla;
+}
