@@ -161,7 +161,7 @@ calcularCredito = function () {
   }
 
   let monto = recuperarFloat("montoCredito");
-  let plazo = recuperarInt("plazoCredito"); 
+  let plazo = recuperarInt("plazoCredito");
 
   if (isNaN(monto) || monto <= 0 || isNaN(plazo) || plazo <= 0) {
     alert("Por favor ingrese un monto y un plazo válidos.");
@@ -179,12 +179,12 @@ calcularCredito = function () {
   if (cuotaMensual <= capacidadPago && capacidadPago > 0) {
     creditoAprobado = true;
     estado = "APROBADO";
-    cmpResultado.className = "aprobado"; 
+    cmpResultado.className = "aprobado";
     cmpBtnSolicitar.disabled = false;
   } else {
     creditoAprobado = false;
     estado = "RECHAZADO";
-    cmpResultado.className = "rechazado"; 
+    cmpResultado.className = "rechazado";
     cmpBtnSolicitar.disabled = true;
   }
 
@@ -193,3 +193,19 @@ calcularCredito = function () {
     "Cuota mensual: " + cuotaMensual + "<br>" +
     "RESULTADO: " + estado;
 }
+
+solicitarCredito = function () {
+  let plazoIngresado = recuperarInt("plazoCredito");
+
+  let credito = {
+    cedula: clienteSeleccionado.cedula,
+    nombre: clienteSeleccionado.nombre,
+    apellido: clienteSeleccionado.apellido,
+    monto: montoCalculado,
+    tasa: tasaInteres,
+    plazo: plazoIngresado,
+    cuota: cuotaCalculada
+  };
+
+  creditos.push(credito);
+};
