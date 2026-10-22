@@ -102,8 +102,6 @@ pintarClientes = function () {
     elementoCliente = clientes[i];
     contenidoTabla += "<tr>" +
       "<td>" + elementoCliente.cedula + "</td>" +
-      "<td>" + elementoCliente.nombre + "</td>" +
-      "<td>" + elementoCliente.apellido + "</td>" +
       "<td>" + elementoCliente.ingresos + "</td>" +
       "<td>" + elementoCliente.egresos + "</td>" +
       "<td><button onclick=\"seleccionarCliente('" + elementoCliente.cedula + "')\">Actualizar</button></td>" +
