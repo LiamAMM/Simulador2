@@ -242,3 +242,9 @@ pintarCreditos = function (creditos) {
 
   cmpTabla.innerHTML = contenidoTabla;
 }
+
+buscarCreditosCliente = function () {
+  let cedula = recuperaraTexto("buscarCedulaListado");
+  let resultado = buscarCreditos(cedula);
+  pintarCreditos(resultado);
+}
