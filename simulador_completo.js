@@ -171,7 +171,8 @@ calcularCredito = function () {
   let capacidadPago = calcularCapacidadPago(clienteSeleccionado);
   let totalPagar = calcularTotalPagar(monto, tasaInteres);
   let cuotaMensual = calcularCuotaMensual(totalPagar, plazo);
-
+  montoCalculado = monto;
+  cuotaCalculada = cuotaMensual;
   let cmpResultado = document.getElementById("resultadoCredito");
   let cmpBtnSolicitar = document.getElementById("btnSolicitarCredito");
 
